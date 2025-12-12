@@ -1,6 +1,8 @@
 # Steam QoS Setup (Systemd + tc)
-
-This guide converts the entire setup into **Markdown**, exactly as requested.
+Make sure you have the following commands:
+IP
+TC
+Steam
 
 ---
 
