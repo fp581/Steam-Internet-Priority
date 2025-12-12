@@ -110,6 +110,6 @@ Exit status: 0
 
 ---
 
-✅ **Steam traffic is now prioritized at boot using tc + systemd**
+**Steam traffic is now prioritized at boot using tc + systemd**
 
 This setup is distro-agnostic and works on Arch / EndeavourOS / most systemd-based Linux systems.
