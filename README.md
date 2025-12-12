@@ -1,12 +1,20 @@
-STEP 1 — Create the script
+# Steam QoS Setup (Systemd + tc)
+
+This guide converts the entire setup into **Markdown**, exactly as requested.
+
+---
+
+## STEP 1 — Create the script
 
 Run:
 
+```bash
 sudo nano /usr/local/bin/steam-qos.sh
+```
 
+Paste **this EXACT script**:
 
-Paste this EXACT script:
-
+```bash
 #!/usr/bin/env bash
 set -e
 
@@ -31,20 +39,29 @@ for ((p=PORT_RANGE_START; p<=PORT_RANGE_END; p++)); do
     tc filter add dev "$INTERFACE" protocol ip parent 1:0 prio 1 \
         u32 match ip sport $p 0xffff flowid 1:1
 done
+```
 
+Save and exit.
 
-Save + exit.
+Make the script executable:
 
-Make executable:
-
+```bash
 sudo chmod +x /usr/local/bin/steam-qos.sh
+```
 
-STEP 2 — Create the service
+---
+
+## STEP 2 — Create the systemd service
+
+Run:
+
+```bash
 sudo nano /etc/systemd/system/steam-qos.service
+```
 
+Paste this **CLEAN version**:
 
-Paste this CLEAN version:
-
+```ini
 [Unit]
 Description=Apply QoS Rules for Steam Gaming
 After=network-online.target
@@ -57,21 +74,40 @@ RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
+```
 
+Save and exit.
 
-Save + exit.
+---
 
-STEP 3 — Reload & enable
+## STEP 3 — Reload & enable the service
+
+Run:
+
+```bash
 sudo systemctl daemon-reload
 sudo systemctl enable --now steam-qos.service
+```
 
+---
 
-Check status:
+## STEP 4 — Check status
 
+Run:
+
+```bash
 systemctl status steam-qos.service
-
+```
 
 You should see:
 
+```text
 Active: active (exited)
 Exit status: 0
+```
+
+---
+
+✅ **Steam traffic is now prioritized at boot using tc + systemd**
+
+This setup is distro-agnostic and works on Arch / EndeavourOS / most systemd-based Linux systems.
